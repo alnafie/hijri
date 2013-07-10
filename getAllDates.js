@@ -1549,8 +1549,11 @@ function dateToString (date) {
 }
 
 function tomorrow (d) {
-	var tom = new Date();
-		tom.setDate(d.getDate()+1);
+	var year = d.getFullYear(),
+		month = d.getMonth(),
+		day = d.getDate(),
+		tom = new Date(year, month, day+1);
+
 	return tom;
 }
 
@@ -1583,7 +1586,7 @@ function bar (x) {
 	var g = x[0].g;
 	var h = x[0].h;
 
-	recursive(g, h);
+	var y = recursive(g, h);
 
 	return z;
 
@@ -1597,23 +1600,23 @@ function bar (x) {
 		z.push(obj);
 
 		if (lastItem(x, g)) {
-			return;
+			return 0;
 		}
 
-		g = dateToString(tomorrow(stringToDate(g)));// g = g + 1 day
-		h = nextHijri(h);// h = h + 1 day
-		recursive(g, h)
+		g = dateToString(tomorrow(stringToDate(g))); // g = g + 1 day
+		h = nextHijri(h); // h = h + 1 day
+		return recursive(g, h);
 
 	}
 
 }
 
-function lastItem (x, g) {
-	if (x[x.length-1].g == g) {
+function lastItem (x, d) {
+	var foo = x[x.length-1].g;
+	if (foo == d) {
 		return true;
-	} else {
-		return false;
 	}
+	return false;
 }
 
 function nextHijri (str) {
@@ -1623,14 +1626,17 @@ function nextHijri (str) {
 	return result.join(".");
 }
 
+function replaceDots(str) {
+	return str.split('.').reverse().join('-');
+}
 
-var z = [
-	{
-		"h": "1.1.1420",
-		"g": "17.4.1999"
-	},
-	{
-		"h": "2.1.1420",
-		"g": "18.4.1999"
+function replaceAllDots(arr) {
+	for (var i = 0; i < arr.length; i++) {
+		var obj = arr[i];
+		for (k in obj) {
+			if (obj.hasOwnProperty(k)) {
+				obj[k] = replaceDots(obj[k]);
+			}
+		}
 	}
-];
+}
