@@ -1,36 +1,25 @@
-
-[
-	{"1.1.1420":"17.4.1999"},
-	{"1.2.1420":"16.5.1999"}
-]
-
-[
-	{"h":"1.3.1420","g":"15.6.1999"},
-	{"h":"1.4.1420","g":"14.7.1999"}
-]
-
-H["1999-7-4"]
-
-H = {
-	"1999-06-15":"1420-03-01",
-	"1999-07-14":"1420-04-01"
-}
-
-G["1.4.1420"]
-
-G = {
-	"1.3.1420":"15.6.1999",
-	"1.4.1420":"14.7.1999"
-}
-
-
-(function() {
+(function(window, undefined) {
 	
-	function Hijri (year, month, day) { // ex. 1420, 5, 3
-		this.year = year;
-		this.month = month;
-		this.day = day;
-		this.g = new Date(G["1420-5-3"]); // 1999-6-12
+	function Hijri () {
+
+		var args = Array.prototype.slice.call(arguments, 0);
+		// var h = new Hijri(); // no args gives same as new Date(); // the current datetime
+		// var h = new Hijri("1420-5-3"); // hijri date string
+		// var h = new Hijri(1420, 5, 3); // hijri year, month, day
+		// var h = new Hijri(254585000); // gregorian m.seconds since epoch
+		// var h = new Hijri(dateObj); // gregorian date obj
+		if (args.length == 0) { console.log('1'); this.g = new Date() } else
+		if (args.length == 1 && typeof args[0] == 'string') { console.log('2'); this.g = new Date(G(args[0])) } else
+		if (args.length == 3) { console.log('3'); args[1]--; this.g = new Date(G(args.join('-'))) } else
+		if (args.length == 1 && typeof args[0] == 'number') { console.log('4'); this.g = new Date(args[0]) } else
+		if (args.length == 1 && args[0] instanceof Date) { console.log('5'); this.g = args[0] }
+
+		this.h = this._h();
+		this.year = +this.h.split('-')[0];
+		this.month = +this.h.split('-')[1];
+		this.day = +this.h.split('-')[2];
+
+		return this;
 	}
 
 	Hijri.prototype = {
@@ -40,16 +29,19 @@ G = {
 		MINUTES_PER_DAY: 1440,
 		HOURS_PER_DAY: 24,
 
-		getDate: function() { return this.day; },
-		getDay: function() { return this.g.getDay(); },
-		getFullYear: function() { return this.year; },
-		getHours: function() { return this.g.getHours(); },
-		getMilliseconds: function() { return this.g.getMilliseconds(); },
-		getMinutes: function() { return this.g.getMinutes(); },
-		getMonth: function() { return this.month; },
-		getSeconds: function() { return this.g.getSeconds(); },
-		getTime: function() { return this.g.getTime(); },
-		getTimezoneOffset: function() { return this.g.getTimezoneOffset(); },
+		// GETTERS
+		getDate: function() { return this.day },
+		getMonth: function() { return this.month },
+		getFullYear: function() { return this.year },
+		getDay: function() { return this.g.getDay() },
+		getHours: function() { return this.g.getHours() },
+		getMilliseconds: function() { return this.g.getMilliseconds() },
+		getMinutes: function() { return this.g.getMinutes() },
+		getSeconds: function() { return this.g.getSeconds() },
+		getTime: function() { return this.g.getTime() },
+		getTimezoneOffset: function() { return this.g.getTimezoneOffset() },
+		
+		// UTC GETTERS
 		getUTCDate: function(){},
 		getUTCFullYear: function(){},
 		getUTCHours: function(){},
@@ -57,7 +49,31 @@ G = {
 		getUTCMinutes: function(){},
 		getUTCMonth: function(){},
 		getUTCSeconds: function(){},
+		
+		// SETTERS
+		setMilliseconds: function(num) {
 
+			// ms = num % 1000
+			// s = ((num - ms) / 1000) % 60
+
+			// this.g.setMilliseconds(ms);
+			// setSeconds( newMs - ms / 1000 )
+
+			
+			// d = H(""+this.g.getFullYear()+"-"+this.g.getMonth()+"-"+this.g.getDate()+""); // H("1999-3-4")
+			// this.year = d.getFullYear();
+			// this.month = d.getMonth();
+			// this.day = d.getDate();
+			// return this.getTime();
+
+			//return this.g.setMilliseconds(newMs);
+
+
+
+		},
+		setSeconds: function() {},
+		setMinutes: function() {},
+		setHours: function() {},
 		// dayValue: An integer from 1 to 30, representing the HIJRI day of the month.
 		// Date Docs: If the parameter you specify is outside of the expected range, 
 		// setDate attempts to update the date information in the Date object 
@@ -66,6 +82,7 @@ G = {
 		// Talal: dayValue = -1 will return last day of previous month -1.
 		// returns: epoch milliseconds
 		setDate: function(dayValue) {
+			var self = this;
 			// case dayValue not an int
 			if (!isInt(dayValue)) {console.log("value must be int."); return false;}
 			// case dayValue {<0}
@@ -73,13 +90,17 @@ G = {
 			// case dayValue {1:29}
 			// case dayValue {30}
 			// case dayValue {>30}
-		},
 
+
+
+			return self.getTime();
+		},
+		setMonth: function() {},
 		// yearValue: An integer specifying the numeric value of the HIJRI year, for example, 1432.
 		// monthValue: An integer between 0 and 11 representing the months Muharram through DhulHijja.
 		// dayValue: An integer between 1 and 30 representing the day of the month. If you specify 
 		// the dayValue parameter, you must also specify the monthValue.
-
+		//
 		// If you do not specify the monthValue and dayValue parameters, the values 
 		// returned from the getMonth and getDate methods are used.
 		// If a parameter you specify is outside of the expected range, setFullYear 
@@ -90,26 +111,7 @@ G = {
 			var monthValue = monthValue || this.getMonth();
 			var dayValue = dayValue || this.getDate();
 		},
-
-		// the following are similar to the above
-		setHours: function() {},
-		setMilliseconds: function() {
-
-			// new milliseconds = value % 1000
-			// setSeconds( value / 1000 (round down) )
-
-			// this.g.setMilliseconds(value);
-			// d = H(""+this.g.getFullYear()+"-"+this.g.getMonth()+"-"+this.g.getDate()+""); // H("1999-3-4")
-			// this.year = d.getFullYear();
-			// this.month = d.getMonth();
-			// this.day = d.getDate();
-			// return this.getTime();
-
-
-		},
-		setMinutes: function() {},
-		setMonth: function() {},
-		setSeconds: function() {},
+		
 
 		setTime: function(timeValue) { return this.g.setTime(timeValue); },
 
@@ -159,7 +161,12 @@ G = {
 		},
 		
 		toSource: function() {},
-		valueOf: function() {}
+		valueOf: function() {},
+
+		// HELPERS
+		_h: function() {
+			return H( [ this.g.getFullYear(), this.g.getMonth()+1, this.g.getDate() ].join('-') );
+		}
 
 	}
 
@@ -168,10 +175,13 @@ G = {
 	   return typeof n === 'number' && n % 1 == 0;
 	}
 
+	
 
-})();
+	window.Hijri = Hijri;
 
+})(window);
 
+/*
 var x = new Date("2012-4-3");
 
 var y = new Hijri(); // no args gives same as new Date(); // the current date/time
@@ -179,9 +189,6 @@ var y = new Hijri("1420-5-3"); // hijri date string
 var y = new Hijri(1420, 5, 3); // hijri year, month, day
 var y = new Hijri(254585000); // gregorian m.seconds since epoch
 var y = new Hijri(x); // gregorian date obj
-
-
-
 
 getDate();
 getDay();
@@ -282,3 +289,5 @@ getMinutes();
 getSeconds();
 getTimezoneOffset();
 getTime();
+
+*/
