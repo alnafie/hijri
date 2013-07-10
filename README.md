@@ -1,12 +1,15 @@
-*Umm Alqura Hijri Calendar Converter (1420-1450 A.H.)
+Umm Alqura Hijri Calendar Converter (1420-1450 A.H.)
+====================================================
 
-**Usage:
+Usage:
+-------
 Include it in your page:
 `<script src="hijri.js"></script>`
 
 Then in your own scripts:
-G('1434-9-1'); 		// => '2013-7-9'
-H('2013-12-31'); 	// => '1435-2-28'
+	G('1434-9-1'); 		// => '2013-7-9'
+	H('2013-12-31'); 	// => '1435-2-28'
 
-**In development:
+In development:
+----------------
 Hijri() Class that corresponds to javascript's native Date() Class.
