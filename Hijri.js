@@ -420,7 +420,7 @@
 		} else
 
 		// H(1365195600000)
-		if (args.length == 1 && typeof args[0] == 'number') { 
+		if (args.length == 1 && typeof args[0] == 'number') {
 			g = new Date(args[0])
 		} else
 		

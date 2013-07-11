@@ -17,6 +17,8 @@ H(1365195600000)		//=> '1434-05-25'
 H(new Date(2013,3,6))	//=> '1434-05-25'
 H()						//=>  equivalent to H(new Date())
 
+
+
 H('2013-04-06', {type:'string'}) 	//=> '1434-05-25'	// DEFAULT
 H('2013-04-06', {type:'array'}) 	//=> [1434, 5, 25]
 H('2013-04-06', {type:'object'}) 	//=> {y:1434, m:5, d:25}
@@ -37,6 +39,7 @@ G()						//=>  equivalent to G((new Date()).getTime())
 
 // requires Hijri Class --Under Development
 G(new Hijri(1434,4,25))	//=> '2013-04-06'
+
 
 
 G('1434-05-25', {type:'string'}) 	//=> '2013-04-06'	// DEFAULT
