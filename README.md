@@ -33,10 +33,11 @@ G(1434,5,25)			//=> '2013-04-06'
 G([1434,5,25])			//=> '2013-04-06'
 G(['1434','5','25'])	//=> '2013-04-06'
 G(1365195600000)		//=> '2013-04-06'
+G()						//=>  equivalent to G((new Date()).getTime())
 
 // requires Hijri Class --Under Development
 G(new Hijri(1434,4,25))	//=> '2013-04-06'
-G()						//=>  equivalent to G(new Hijri())
+
 
 G('1434-05-25', {type:'string'}) 	//=> '2013-04-06'	// DEFAULT
 G('1434-05-25', {type:'array'}) 	//=> [2013, 4, 6]

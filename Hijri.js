@@ -346,6 +346,12 @@
 			args.pop();
 		}
 
+		// G()
+		if (args.length == 0) { 
+			var g = new Date(),
+				h = H(g, {type:'array'});
+		} else
+
 		// G('1434-5-25') or G('1434-05-25')
 		if (args.length == 1 && typeof args[0] == 'string') { 
 			var str = args[0].split('-'),
