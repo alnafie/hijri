@@ -43,4 +43,4 @@ G('1434-05-25', {type:'date'}) 		//=> new Date(2013,3,6)
 
 In development:
 ----------------
-Hijri() Class that corresponds to javascript's native Date() Class.
+Hijri() Class that mirrors javascript's native Date() Class as specified in the ECMAScript Specification (http://www.ecma-international.org/ecma-262/5.1/#sec-15.9).
