@@ -334,10 +334,6 @@
 		return arr;
 	}
 
-	// G('1434-5-25')			//=> '2013-04-06'
-	// G('1434-05-25')			//=> '2013-04-06'
-	// G(1434,5,25)			//=> '2013-04-06'
-	// G(1365195600000)		//=> '2013-04-06'
 	function G() {
 
 		var h, options = {},
@@ -400,7 +396,7 @@
 
 		// split off the options hash if it is provided
 		var lastArgument = args[args.length-1];
-		if (typeof lastArgument == typeof {} && !(lastArgument instanceof Date)) {
+		if (typeof lastArgument == typeof {} && !(lastArgument instanceof Date || lastArgument instanceof Array)) {
 			options = lastArgument;
 			args.pop();
 		}
@@ -429,8 +425,9 @@
 
 		// H([2013,4,6]) or H(['2013',4,'06'])
 		if (args.length == 1 && args[0] instanceof Array) {
-			var arr = args[0];
-			g = new Date(+arr[0], +arr[1]-1, +arr[2]);
+			var arr = args[0],
+				  y = +arr[0], m = +arr[1]-1, d = +arr[2];
+			g = new Date(y, m, d);
 		} else
 		
 		// H(2013,4,6) or H('2013','04','6')
